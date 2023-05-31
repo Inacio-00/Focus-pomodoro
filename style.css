@@ -1,0 +1,180 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-ft: #ffffff;
+    --base-color: 194;
+    --bg-controls-color: rgba(255, 255, 255, 0.1);
+    --bg-body: #131316;
+    --bg-image: url(imagens/imgbackleft.png) var(--bg-body) no-repeat center / cover;
+    --bg-theme: url(imagens/sun.svg) #ffffff no-repeat center;
+    --bg-spantheme: rgba(255, 255, 255, 0.05);
+    --border-spanth:  rgba(255, 255, 255, 0.5);
+    --highlight-color: rgba(255, 255, 255, 0.2);
+    font-size: 62.5%;
+}
+
+
+.light {
+    --color-ft: #000000;
+    --bg-body: #cdcdf7;
+    --bg-image: url(imagens/imgbackright.png) var(--bg-body) no-repeat center / cover;
+    --bg-theme: url(imagens/moon-stars.svg) #ffffff no-repeat center;
+    --bg-spantheme: rgba(255, 255, 255, 0.397);
+    --bg-controls-color: rgba(2, 2, 2, 0.767);
+    --border-spanth:  rgba(14, 14, 14, 0.884);
+}
+
+.hide { 
+    display: none;
+}
+
+body {
+    background: var(--bg-image);
+    font-family: 'Roboto', sans-serif;
+
+    color: var(--color-ft);
+    height: 100vh;
+    display: grid;
+    caret-color: transparent;
+}
+
+header {
+    width: 10rem;
+    height: 10rem;
+
+    margin: 3rem  0 0 3rem;
+    position: relative;
+}
+
+header button{
+    background: var(--bg-theme);
+    border-radius: 50%;
+    width: 3.2rem;
+    height: 3.2rem;
+    position: absolute;
+    top: 29%;
+    left: 14%;
+    z-index: 1;
+    transition: 100ms;
+}
+
+.backdarktheme {
+    animation: backdarktheme 1s;
+}
+
+.light header button {
+    animation: buttonthemelight 1s forwards;
+}
+
+header button:hover {
+    outline: 5px solid var(--highlight-color); 
+}
+
+header span {
+    display: block;
+    width: 6rem;
+    height: 3rem;
+    background: var(--bg-spantheme);
+    border: 1px solid var(--border-spanth);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(5px);
+
+    position: absolute;
+    top: 30%;
+    right: 20%;
+    border-radius: 9999px;
+}
+
+main {
+    justify-self: center;
+    align-self: end;
+    padding-bottom: 12rem;
+}
+
+#timer {
+    text-align: center;
+    font-size: clamp(10rem, 5rem + 15vw, 15rem);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.controls {
+    background-color: var(--bg-controls-color);
+    height: clamp(5rem, 1rem + 13vh, 15rem);
+    width: clamp(20rem, 10rem + 20vw, 28rem);
+    border-radius: 9999px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    margin: 4rem auto 8rem;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: 300ms;
+}
+
+.controls button:hover {
+    transform: scale(1.02);
+}
+
+button img {
+    width: clamp(7rem, 2rem + 10vw, 10rem);
+    stroke: var(--color-button);
+    fill: var(--color-button);
+}
+
+footer{
+    position: relative;
+}
+
+footer button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0 4rem 4rem 0;
+}
+
+
+footer .buttonSound-on {
+    animation: animation 3s infinite;
+}
+
+footer .buttonSound-on-light {
+    animation: animation 3s infinite;
+}
+
+@keyframes animation {
+    0% {transform: scale(1);}
+    50%{transform: scale(1.1);}
+    100%{transform: scale(1);}
+}
+
+
+@keyframes backdarktheme {
+    from {
+        left: 52%;
+    }
+    to {
+        left: 14%;
+    }
+}
+
+
+@keyframes buttonthemelight {
+    from {
+        left: 14%;
+    }
+    to {
+        left: 52%;
+    }
+}
