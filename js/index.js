@@ -1,112 +1,59 @@
+import Theme from "./theme.js"
+import Timer from "./timer.js"
+import Controls from "./controls.js"
+import Sounds from "./sound.js"
+
 const html = document.documentElement
-const buttonTheme = document.querySelector(".oi")
+const buttonTheme = document.querySelector(".theme")
 const buttonSoundOn = document.querySelector(".buttonSound-on")
 const buttonSoundOff = document.querySelector(".buttonSound-off")
-const buttonSoundOnLight = document.querySelector(".buttonSound-on-light") 
-const buttonSoundOffLight = document.querySelector(".buttonSound-off-light")
 const buttonPlay = document.querySelector(".buttonPlay")
 const buttonPause = document.querySelector(".buttonPause")
 const buttonStop = document.querySelector(".buttonStop")
 const buttonTimer = document.querySelector(".buttonTimer")
 const minutesDisplay = document.querySelector(".minutes")
 const secondsDisplay = document.querySelector(".seconds")
-let timeout
-let minutes = minutesDisplay.textContent
 
 
-function updateDysplay(minutes, seconds) {
-    minutesDisplay.textContent = String(minutes).padStart(2, "0")
-    secondsDisplay.textContent = String(seconds).padStart(2, "0")
-}
+Theme({buttonTheme, html, buttonSoundOn, buttonSoundOff})
 
-function stopwatch() {
-    timeout = setTimeout(() => {
-        let minutes = minutesDisplay.textContent
-        let seconds = secondsDisplay.textContent
-        
-        if (minutes<=0 && seconds<=0) {
-            reloadTime()
-            return
-        }
+const controls = Controls({buttonPlay, buttonPause, buttonStop, buttonTimer, buttonSoundOn, buttonSoundOff})
 
-        if (seconds<=0) {
-            seconds = 60
-            --minutes
-        }
+const timer = Timer({minutesDisplay, secondsDisplay, stop: controls.stop})
 
-        updateDysplay(minutes, --seconds)
-
-        stopwatch()}, 1000)
-}
-
-function reloadTime() {
-    clearTimeout(timeout)
-    updateDysplay(minutes, 0)
-}
-
-buttonTheme.addEventListener('click', () => {
-    html.classList.toggle("light")
-
-    if (html.classList.contains("light")){
-        buttonTheme.classList.remove('backdarktheme')
-        buttonSoundOn.classList.add("hide")
-        buttonSoundOnLight.classList.remove("hide")
-    }
-
-    else {
-        buttonTheme.classList.add("backdarktheme")
-        buttonSoundOn.classList.remove("hide")
-        buttonSoundOnLight.classList.add("hide")
-    }
-})
+const sounds = Sounds()
 
 buttonPlay.addEventListener('click', () => {
-    buttonPlay.classList.add("hide")
-    buttonPause.classList.remove("hide")
-    buttonTimer.classList.add("hide")
-    buttonStop.classList.remove("hide")
-    stopwatch()
+    controls.play()
+    timer.stopwatch()
 })
 
 buttonPause.addEventListener('click', () => {
-    buttonPause.classList.add("hide")
-    buttonPlay.classList.remove("hide")
-    clearTimeout(timeout)
+    controls.pause()
+    timer.pause()
 })
 
 buttonStop.addEventListener('click', () => {
-    buttonStop.classList.add("hide")
-    buttonTimer.classList.remove("hide")
-    buttonPause.classList.add("hide")
-    buttonPlay.classList.remove("hide")
-    reloadTime()
-
+    controls.stop()
+    timer.reloadTimer()
 })
 
 buttonTimer.addEventListener('click', () => {
-    let newminutes = prompt("Quantos minutos deseja cronometrar")
-
-    minutes = newminutes
-    updateDysplay(minutes,0)
+    let newMinutes = prompt("Quantos minutos deseja cronometrar?")
+    if(!newMinutes || isNaN(newMinutes) == true) {
+        timer.reloadTimer()
+        return
+    }
+    timer.updateDysplay(newMinutes,0)
+    timer.attTimer(newMinutes)
 })
 
-
 buttonSoundOn.addEventListener('click', () => {
-    buttonSoundOn.classList.add("hide")
-    buttonSoundOff.classList.remove("hide")
+    controls.soundOn()
+    sounds.bgAudio.pause()
 })
 
 buttonSoundOff.addEventListener('click', () => {
-    buttonSoundOff.classList.add("hide")
-    buttonSoundOn.classList.remove("hide")
-})
-
-buttonSoundOnLight.addEventListener('click', () => {
-    buttonSoundOnLight.classList.add("hide")
-    buttonSoundOffLight.classList.remove("hide")
-})
-
-buttonSoundOffLight.addEventListener('click', () => {
-    buttonSoundOffLight.classList.add("hide")
-    buttonSoundOnLight.classList.remove("hide")
+    controls.soundOff()
+    sounds.bgAudio.play()
 })
