@@ -29,7 +29,7 @@ export default function Timer ({minutesDisplay,secondsDisplay, stop}) {
             updateDysplay(minutes, --seconds)
             
             stopwatch()
-            }, 100)
+            }, 1000)
     }
 
     function reloadTimer() {
